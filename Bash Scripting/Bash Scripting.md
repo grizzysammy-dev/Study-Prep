@@ -14,11 +14,11 @@ Ref "https://www.freecodecamp.org/news/bash-scripting-tutorial-linux-shell-scrip
 - Making a basic bash script
 	- vi ***vi <"script-name">.sh***
 	- Script 1
-	- ```#!/bin/bash # the shebang sets the shell, for this script it is bash
+	- #!/bin/bash # the shebang sets the shell, for this script it is bash
 	- echo "Today is " `date` # the Echo command, displays a specific ASCII
 	  echo -e "\nenter the path to directory"
 	  read the_path
 	  echo -e "\n you path has the following files and folders: "
-	  ls $the_path```
+	  ls $the_path
 	- Script 2
 		- 
