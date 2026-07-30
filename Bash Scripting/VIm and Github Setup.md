@@ -8,5 +8,3 @@ Vim Adventure - [https://vim-adventures.com](https://vim-adventures.com)
 Github Set Up
 - I set up a Initially Private Repository as I had it linked to my personal Note taking software, but I enabled it to be Public therefore allowing Instructors to be able to view my notes and progress on the Study Guide
 	- Public Repo Name "**Study-Prep**" User ***grizzysammy-dev***
-
-Bash Scripting Module
