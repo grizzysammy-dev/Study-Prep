@@ -21,4 +21,4 @@ Ref "https://www.freecodecamp.org/news/bash-scripting-tutorial-linux-shell-scrip
 			`echo -e "\n you path has the following files and folders: " #`
 			`ls $the_path # `
 	- Script 2
-		- 
+			
