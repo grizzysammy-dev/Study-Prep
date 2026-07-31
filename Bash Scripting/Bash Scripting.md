@@ -35,3 +35,65 @@ Ref "https://www.freecodecamp.org/news/bash-scripting-tutorial-linux-shell-scrip
 			`#!/bin/bash`
 			`echo "How old are you?"`
 			`read entered_age`
+			`echo -e "\nWelcome to Age Calculator, your current age is..." $entered_age`
+	- Script 4
+			`while read line`
+			`do`
+			 `echo $line`
+			`done < output.txt`
+	- Command Line Arguments
+			`#!/bin/bash`
+			`echo "Yo, $7!"`
+	- Writing a file
+			`echo "Send to File..." > file.txt`
+	- Appending to a file
+			`echo "Some more to send to File..." >> file.txt
+	- Redirecting outputs to a file
+			`pwd > pwd_save.txt`
+			`pwd >> pwd_appended_save.txt`
+	- List of basic bash commands to save here:
+		- 1. `cd`: Change the directory to a different location.
+		- `ls`: List the contents of the current directory.
+		- `mkdir`: Create a new directory
+		- `touch`: Create a new file.
+		- `rm`: Remove a file or directory.
+		- `cp`: Copy a file or directory.
+		- `mv`: Move or rename a file or directory.
+		- `echo`: Print text to the terminal.
+		- `cat`: Concatenate and print the contents of a file.
+		- `grep`: Search for a pattern in a file.
+		- `chmod`: Change the permissions of a file or directory.
+		- `sudo`: Run a command with administrative privileges.
+		- `df`: Display the amount of disk space available.
+		- `history`: Show a list of previously executed commands.
+		- `ps`: Display information about running processes.
+	- Template Conditional Bash statements for scripting
+			- ```bash
+				if [[ condition ]];
+				then
+				    statement
+				elif [[ condition ]]; then
+				    statement 
+				else
+				    do this by default
+				fi
+	- Script 5 - Script that takes User input and understands if a number is positive or negative
+			```bash
+				#!/bin/bash
+				echo "Please enter a number, can be positive or negative: "
+				read num
+				if [ $num -gt 0 ]; then
+				  echo "$num is positive"
+				elif [ $num -lt 0 ]; then
+				  echo "$num is negative"
+				else
+				  echo "$num is zero"
+				fi
+	- While loop in bash
+	- For loop in bash
+	- Case statements & loops in bash
+	- Scheduling Scripts using Cron
+	- Using the Crontab
+	- Use the Set option
+	- Check the Exit Code
+	- 
