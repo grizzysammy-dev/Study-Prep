@@ -1,0 +1,9 @@
+# never commit these to a PUBLIC repo
+*_loot/
+_to_delete/
+*.key
+*.ovpn
+wg0.conf
+*.pcap
+_jcu_delivery*.tar.gz
+.obsidian/workspace.json

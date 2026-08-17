@@ -1,0 +1,96 @@
+---
+tags: [jcu, module3, windows, networking]
+jqr: "Windows Defender Firewall: disable via GUI (wf.msc) + netsh advfirewall + Set-NetFirewallProfile; add an allow rule via netsh and New-NetFirewallRule"
+---
+
+# Windows Firewall
+
+How to turn the **Windows Defender Firewall** off (a lab/troubleshooting move) and — the better real-world skill — **add a rule** to let specific traffic through. Three ways each: GUI, `netsh advfirewall`, and PowerShell. All firewall changes need an **elevated** shell.
+
+## TL;DR
+```cmd
+netsh advfirewall show allprofiles                       :: view state
+netsh advfirewall set allprofiles state off              :: DISABLE all profiles   (admin)
+netsh advfirewall firewall add rule name="Allow RDP" dir=in action=allow protocol=TCP localport=3389
+```
+```powershell
+Set-NetFirewallProfile -All -Enabled False               # DISABLE all profiles
+New-NetFirewallRule -DisplayName "Allow RDP" -Direction Inbound -Action Allow -Protocol TCP -LocalPort 3389
+```
+> Prefer **adding a rule** over disabling the firewall. Disabling is a troubleshooting step, not a fix.
+
+## Concept
+The Defender Firewall has **three profiles** and each network you connect to is tagged with one:
+- **Domain** — the NIC is on a network where a domain controller is reachable.
+- **Private** — a trusted network you marked private (home/lab).
+- **Public** — untrusted (cafe, hotel) — the most restrictive by default.
+
+Rules are per-profile, so "it's blocked on Public but works on Private" is normal. When troubleshooting "can't reach the service," check *which profile the adapter is on* and whether the rule covers that profile. This is the Windows counterpart to [iptables](../03%20-%20Linux%20Skills/iptables.md).
+
+## Disable — GUI
+- **`wf.msc`** (Win+R) → *Windows Defender Firewall with Advanced Security* → **Windows Defender Firewall Properties** → on each profile tab set **Firewall state = Off**.
+- **Control Panel** → *System and Security* → *Windows Defender Firewall* → **Turn Windows Defender Firewall on or off** → *Turn off* for each network type.
+- **Windows Security app** → *Firewall & network protection* → pick a profile → toggle **off**.
+
+→ `wf.msc` is also where you see/edit **individual rules** in the GUI (Inbound Rules / Outbound Rules).
+
+## Disable — cmd (`netsh advfirewall`)
+```cmd
+netsh advfirewall show allprofiles              :: view state of all profiles
+netsh advfirewall set allprofiles state off     :: DISABLE on all profiles   (admin)
+netsh advfirewall set allprofiles state on      :: re-enable
+netsh advfirewall set publicprofile state off   :: just one profile
+```
+> 🧪 **Run this on your lab** — verified against current docs, confirm on your box. `netsh advfirewall` is fully supported in 2026, not deprecated.
+
+## Disable — PowerShell
+```powershell
+Get-NetFirewallProfile | Select Name,Enabled             # view state
+Set-NetFirewallProfile -All -Enabled False               # DISABLE all profiles
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False   # explicit form
+Set-NetFirewallProfile -All -Enabled True                # re-enable
+```
+→ `-All` and the explicit `-Profile Domain,Public,Private` do the same thing.
+
+## Add a rule (preferred over disabling)
+**cmd / netsh:**
+```cmd
+netsh advfirewall firewall add rule name="Allow RDP" dir=in action=allow protocol=TCP localport=3389
+netsh advfirewall firewall add rule name="Allow Ping" dir=in action=allow protocol=icmpv4
+netsh advfirewall firewall delete rule name="Allow RDP"
+```
+**PowerShell:**
+```powershell
+New-NetFirewallRule -DisplayName "Allow RDP" -Direction Inbound -Action Allow -Protocol TCP -LocalPort 3389
+New-NetFirewallRule -DisplayName "Allow Ping" -Direction Inbound -Action Allow -Protocol ICMPv4
+Get-NetFirewallRule -DisplayName "Allow RDP"
+Remove-NetFirewallRule -DisplayName "Allow RDP"
+```
+→ The four things a rule needs: **name**, **direction** (`dir=in`/`-Direction Inbound`), **action** (allow/block), and the **match** (protocol + port). Add `-Profile` / `profile=` to scope it to Domain/Private/Public.
+
+**Allow inbound on a specific port from one host only (tighter):**
+```powershell
+New-NetFirewallRule -DisplayName "Allow SMB from mgmt" -Direction Inbound -Action Allow `
+  -Protocol TCP -LocalPort 445 -RemoteAddress 192.168.1.20
+```
+→ Scoping `-RemoteAddress` is the difference between "open to the world" and "open to one admin box."
+
+## Exam tips & gotchas
+- **Disabling ≠ the answer.** If the task is "let RDP through," add a rule; only disable the firewall when explicitly told to for troubleshooting.
+- **Profiles are separate.** A rule on Private won't help a NIC that's on Public. Check the active profile (`Get-NetConnectionProfile`).
+- **Re-enable when done.** Leaving `state off` after a test is a finding against you.
+- **ICMP (ping) is not a port** — allow it by protocol (`protocol=icmpv4` / `-Protocol ICMPv4`), not a `localport`.
+- **`netsh advfirewall` vs old `netsh firewall`** — the bare `netsh firewall` context is legacy; use `netsh advfirewall`.
+- Every change needs **Administrator**.
+
+## References
+- Configure Windows Firewall with command line — https://learn.microsoft.com/en-us/windows/security/operating-system-security/network-security/windows-firewall/configure-with-command-line
+- netsh advfirewall firewall — https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/netsh-advfirewall-firewall-control-firewall-behavior
+- NetSecurity module (New-NetFirewallRule) — https://learn.microsoft.com/en-us/powershell/module/netsecurity/
+
+## Related
+- [iptables](../03%20-%20Linux%20Skills/iptables.md)
+- [Windows Networking and Interfaces](Windows%20Networking%20and%20Interfaces.md)
+- [Windows CLI and net Commands](Windows%20CLI%20and%20net%20Commands.md)
+- [Network Security Devices](../06%20-%20Knowledge%20Requirements/Network%20Security%20Devices.md)
+- [PsExec and Sysinternals](PsExec%20and%20Sysinternals.md)
