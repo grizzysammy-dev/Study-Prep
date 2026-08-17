@@ -1,4 +1,4 @@
-# JCU Cyber Candidate — Study Vault
+#— Study Vault
 
 My study notes for the **Joint Communications Unit (JCU) Cyber Candidate JQR**. Organized by tool and topic (the way I built the repo), so I can jump straight to the thing I'm working on. Built in [Obsidian](https://obsidian.md), synced here so it's readable during prep and open-book work — when the only thing I can pull up is this public repo.
 
