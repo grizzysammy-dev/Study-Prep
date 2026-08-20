@@ -52,20 +52,23 @@ Concepts shown: `read -p` input, variables, quoting, and a here-block of `echo`s
 ## Project 2: directory & file checker
 > *"Check if a directory exists; if it does, see if a specific file exists within it. If not, create the file. Print whether the directory/file exists; if it didn't, print that it's now created."*
 
-```#!/bin/bash
-# dir-file-check.sh — I give it a folder + filename (or it uses my defaults)
+```bash 
+#!/bin/bash
+# dir-file-check.sh — check a folder exists; if so, make sure the file is in it
 
-DIR="${1:-/tmp/lab_demo}"   # 1st thing I type, or a default
-FILE="${2:-notes.txt}"      # 2nd thing I type, or a default
+d="${1:-/tmp/lab_demo}"   # folder to check specifically (1st arg, or a default)
+f="${2:-notes.txt}"      # file to look for specifically (2nd arg, or a default)
 
-mkdir -p "$DIR"             # make the folder if it isn't already there
-
-# now check for the file, and make it if it's missing
-if [ -f "$DIR/$FILE" ]; then
-  echo "[+] $FILE already exists in $DIR"
+if [ -d "$d" ]; then #if the directory then.
+  echo "The Directory '$d' exists." #print the directory exists
+  if [ -f "$d/$f" ]; then #print if the file exists in the directory already
+    echo "THe File '$d' already exists in '$d'."
+  else #if the file does not exits in that directory then...
+    touch "$d/$f" #create the file
+    echo "The File '$f' wasn't there, so I created it." #tell me the file has been created
+  fi #finished
 else
-  touch "$DIR/$FILE"
-  echo "[!] $FILE wasn't there, so I made it"
+  echo "[-] Directory '$d' does not exist — nothing created." #debug print, directory not real
 fi
 ```
 
