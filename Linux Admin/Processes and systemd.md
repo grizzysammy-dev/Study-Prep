@@ -1,13 +1,13 @@
 ---
 tags: [cyber, module3, linux]
-jqr: "Module 3 — inspect/kill processes (top/htop/ps, signals) and manage services with systemd/systemctl"
+jqr: "Module 3 - inspect/kill processes (top/htop/ps, signals) and manage services with systemd/systemctl"
 ---
 
 # Processes and systemd
 
-Seeing what's running, killing it cleanly, and controlling the services systemd starts at boot. Includes the one-liner that ties a listening port back to the process behind it.
+Seeing what's running, killing it cleanly, and controlling the services systemd starts at boot. This also has the one-liner I always want: tying a listening port back to the process behind it.
 
-## TL;DR
+## The quick set
 ```bash
 top                             # live process view (P=sort CPU, M=sort mem, k=kill, q=quit)
 ps aux | grep sshd              # snapshot: find a process (BSD style)
@@ -21,14 +21,14 @@ sudo ss -tulpn                  # every listening port + the program that owns i
 - **enable ≠ start.** `enable` = future boots; `start` = right now. `enable --now` = both.
 - **SIGTERM (15) before SIGKILL (9).** Give the app a chance to clean up first.
 
-## Concept
-A **process** is a running program with a PID; every process has a parent (PPID) — trace the tree back and you reach **PID 1 = systemd**. **systemd** is the modern **init system** (first process the kernel starts) *and* **service manager**: it boots the machine, starts/stops background services (**units**), tracks dependencies/ordering, and owns the journal ([Logs and journalctl](Logs%20and%20journalctl.md)). You drive it with **`systemctl`**. *A "unit" is just systemd's noun for anything it manages — a service, a timer, a socket, a mounted disk — each described by a small declarative text file that says what to run and what it depends on.*
+## The mental model
+A **process** is a running program with a PID, and every process has a parent (PPID). Trace the tree back and you reach **PID 1 = systemd**. **systemd** is the modern **init system** (the first process the kernel starts) and also the **service manager**: it boots the machine, starts/stops background services (**units**), tracks dependencies and ordering, and owns the journal ([Logs and journalctl](Logs%20and%20journalctl.md)). I drive it with **`systemctl`**. A "unit" is just systemd's word for anything it manages, whether a service, a timer, a socket, or a mounted disk, each described by a small declarative text file that says what to run and what it depends on.
 
-## top — live view (always installed)
+## top (always there)
 ```bash
 top
 ```
-**Header:** `load average: 0.15, 0.10, 0.05` = run-queue over **1/5/15 min** (compare to core count via `nproc`; load ≈ cores = fully busy). `%Cpu(s)`: `us` user, `sy` kernel, `id` idle, `wa` **I/O wait** (high = disk bottleneck), `st` stolen (VMs). `MiB Mem`/`MiB Swap`: heavy **swap** = RAM pressure.
+**Header:** `load average: 0.15, 0.10, 0.05` is the run-queue over **1/5/15 min** (compare to core count via `nproc`; load ≈ cores = fully busy). `%Cpu(s)`: `us` user, `sy` kernel, `id` idle, `wa` **I/O wait** (high = disk bottleneck), `st` stolen (VMs). `MiB Mem`/`MiB Swap`: heavy **swap** = RAM pressure.
 
 **Per-process columns:** `PID USER PR NI VIRT RES SHR S %CPU %MEM TIME+ COMMAND`.
 - `RES` = **real RAM** used (the number that matters). `VIRT` = virtual (usually huge, ignore).
@@ -37,14 +37,14 @@ top
 
 **Keys inside top:** `P` sort by CPU, `M` by memory, `k` kill a PID, `1` show each core, `u` filter by user, `q` quit.
 
-## htop — nicer (install it)
+## htop (nicer, install it)
 ```bash
 sudo apt install htop        # or dnf install htop
 htop
 ```
-→ Same data, colored per-core bars, scrollable, mouse. **F3** search, **F4** filter, **F5** tree, **F6** sort, **F9** kill, **F10** quit. Preferred when available.
+Same data, but colored per-core bars, scrollable, mouse support. **F3** search, **F4** filter, **F5** tree, **F6** sort, **F9** kill, **F10** quit. I use this when it's available.
 
-## ps — one-shot snapshot (scriptable)
+## ps (one-shot snapshot)
 ```bash
 ps aux               # BSD style: EVERY process, all users, %CPU/%MEM
 ps -ef               # UNIX style: every process, with PPID (parent)
@@ -53,15 +53,17 @@ ps -ef --forest      # tree of parent/child relationships
 ps -u sam            # only user sam's processes
 ps -eo pid,ppid,user,%cpu,%mem,stat,cmd --sort=-%cpu | head   # custom cols, top CPU first
 ```
-- **`ps aux`**: `USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND` — `RSS` = real RAM (KB), `STAT` = state (`+` foreground, `s` session leader).
-- **`ps -ef`**: `UID PID PPID C STIME TTY TIME CMD` — note **`PPID`** for tracing what spawned what.
-> **Remember both spellings:** `ps aux` (no dash, BSD) and `ps -ef` (dash, UNIX) — same goal. `top`/`htop` = live; `ps` = a frozen snapshot you can pipe.
+- **`ps aux`** gives `USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND`, where `RSS` is real RAM (KB) and `STAT` is state (`+` foreground, `s` session leader).
+- **`ps -ef`** gives `UID PID PPID C STIME TTY TIME CMD`, and I watch **`PPID`** to trace what spawned what.
 
-## Kill processes — it's really "send a signal"
-- **`SIGTERM` (15)** — "please terminate," the **polite default**; lets the app flush files/close sockets. Try first.
-- **`SIGKILL` (9)** — "die now," kernel force-kill, **cannot be caught**. Last resort; risks data loss.
-- **`SIGHUP` (1)** often = "reload config"; `SIGSTOP`/`SIGCONT` pause/resume.
-> **Why `-9` is the nuclear option:** a signal is just the kernel tapping a process on the shoulder. Most signals — SIGTERM included — can be *caught*: the program registers a handler and gets a moment to flush buffers and close sockets before exiting. **SIGKILL is carried out by the kernel itself**; the process never runs another instruction, so there's no chance to clean up — reliable, but that's exactly why it can leave half-written files. And a process in state **`D`** is asleep *inside* a kernel call, so it can't receive anything until that I/O returns — which is why even `-9` "won't kill it."
+I keep both spellings in my head: `ps aux` (no dash, BSD) and `ps -ef` (dash, UNIX) get to the same place. `top`/`htop` are live; `ps` is a frozen snapshot I can pipe.
+
+## Killing = sending a signal
+- **`SIGTERM` (15)** is "please terminate," the polite default; it lets the app flush files and close sockets. I try this first.
+- **`SIGKILL` (9)** is "die now," a kernel force-kill that **cannot be caught**. Last resort, and it risks data loss.
+- **`SIGHUP` (1)** often means "reload config"; `SIGSTOP`/`SIGCONT` pause/resume.
+
+Why `-9` is the nuclear option: a signal is just the kernel tapping a process on the shoulder. Most signals, SIGTERM included, can be *caught*, meaning the program registers a handler and gets a moment to flush buffers and close sockets before exiting. **SIGKILL is carried out by the kernel itself**, so the process never runs another instruction and gets no chance to clean up. Reliable, but that's exactly why it can leave half-written files. And a process in state **`D`** is asleep *inside* a kernel call, so it can't receive anything until that I/O returns, which is why even `-9` "won't kill it."
 ```bash
 kill 1234              # SIGTERM (15) to PID 1234 — polite default
 kill -15 1234          # explicit SIGTERM
@@ -73,10 +75,11 @@ pkill -f "python app.py"   # match the full command line (-f), not just the name
 pkill -u sam           # kill all of user sam's processes
 pgrep -af sshd         # FIND matching PIDs first — look before you leap
 ```
-**Typical flow:** `kill PID` → wait a few seconds → still there? → `kill -9 PID`.
-> **Gotchas:** always **15 before 9** — `-9` gives no chance to save and can corrupt files. A process in state **`D`** (uninterruptible I/O) **won't die even with -9** until the I/O completes. `killall` matches by name (be sure it's right); `pkill -f` matches the command line (verify with `pgrep -af` first).
+Typical flow: `kill PID`, wait a few seconds, and if it's still there, `kill -9 PID`.
 
-## systemctl — control services
+Things that bite me: always **15 before 9**, since `-9` gives no chance to save and can corrupt files. A process in state **`D`** (uninterruptible I/O) **won't die even with -9** until the I/O completes. `killall` matches by name (be sure it's right); `pkill -f` matches the command line (verify with `pgrep -af` first).
+
+## systemctl (controlling services)
 ```bash
 sudo systemctl start  nginx      # start now
 sudo systemctl stop   nginx      # stop now
@@ -92,25 +95,25 @@ systemctl list-units --type=service          # all loaded services
 systemctl list-unit-files --state=enabled    # everything set to start at boot
 systemctl --failed               # units that FAILED (great triage command)
 ```
-> **enable ≠ start.** `enable` = every boot (future); `start` = this instant (now). `enable --now` does both; mirror for off is `disable` (future) vs `stop` (now).
+> **enable ≠ start.** `enable` = every boot (future); `start` = this instant (now). `enable --now` does both; the mirror for off is `disable` (future) vs `stop` (now).
 
-**Reading `status`:** `Active: active (running)` = up; `active (exited)` = a one-shot that finished OK; `failed` = crashed (scroll the log lines, or `journalctl -u nginx -e`). `Loaded: … ; enabled` tells you the boot setting.
+**Reading `status`:** `Active: active (running)` = up; `active (exited)` = a one-shot that finished OK; `failed` = crashed (scroll the log lines, or `journalctl -u nginx -e`). `Loaded: ... ; enabled` tells you the boot setting.
 
 **Where unit files live (precedence high → low):**
 | Location | Purpose |
 |---|---|
-| **`/etc/systemd/system/`** | **Admin/local** units + overrides — **highest priority**, put your own here |
+| **`/etc/systemd/system/`** | **Admin/local** units + overrides, **highest priority**, put your own here |
 | **`/run/systemd/system/`** | Runtime-generated units (volatile) |
-| **`/lib/systemd/system/`**, **`/usr/lib/systemd/system/`** | **Package-shipped** units — don't edit (vendor-owned; `/lib` is a symlink to `/usr/lib`) |
+| **`/lib/systemd/system/`**, **`/usr/lib/systemd/system/`** | **Package-shipped** units, don't edit (vendor-owned; `/lib` is a symlink to `/usr/lib`) |
 
-**`daemon-reload` — the must-remember step:**
+The must-remember step is `daemon-reload`:
 ```bash
 sudo systemctl daemon-reload     # re-read unit files AFTER you create/edit one
 ```
-> **Gotcha:** whenever you add or edit a `.service` file, run **`daemon-reload`** first, *then* `restart`/`start` — skip it and systemd keeps the old definition. To customise a vendor unit safely use `sudo systemctl edit nginx` (writes an override in `/etc/systemd/system/…`) instead of editing files under `/usr/lib`.
+Whenever I add or edit a `.service` file I run **`daemon-reload`** first, *then* `restart`/`start`; skip it and systemd keeps the old definition. To customise a vendor unit safely I use `sudo systemctl edit nginx` (which writes an override in `/etc/systemd/system/...`) instead of editing files under `/usr/lib`.
 
 ## What's listening? ss -tulpn
-When triaging a service, you want the reverse of "is it running?" — "what port is open, and which process owns it?" **`ss`** (from `iproute2`, the modern `netstat`) answers with the flag block **`-tulpn`**:
+When I'm triaging a service I usually want the reverse of "is it running?", which is "what port is open, and which process owns it?" **`ss`** (from `iproute2`, the modern `netstat`) answers with the flag block **`-tulpn`**:
 - **`t`** TCP · **`u`** UDP · **`l`** listening only · **`p`** owning **process/PID** (needs sudo for other users) · **`n`** numeric (`:22` not `:ssh`, no DNS).
 
 ```bash
@@ -118,7 +121,7 @@ sudo ss -tulpn            # THE command: listening sockets + owning program
 sudo ss -tulpn | grep :443   # who's on port 443?
 ```
 
-> ✅ **Tested output** (Ubuntu 24.04, 2026):
+Output when I ran it (Ubuntu 24.04):
 ```
 Netid State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
 tcp   LISTEN 0      128          0.0.0.0:2025       0.0.0.0:*
@@ -127,9 +130,9 @@ tcp   LISTEN 0      512        127.0.0.1:42569      0.0.0.0:*    users:(("claude
 tcp   LISTEN 0      4096       127.0.0.1:34007      0.0.0.0:*    users:(("environment-man",pid=473,fd=13))
 tcp   LISTEN 0      5            0.0.0.0:8080       0.0.0.0:*    users:(("python3",pid=12539,fd=3))
 ```
-→ Each `LISTEN` row is an open door. **`0.0.0.0:8080`** = reachable from the whole network and owned by **`python3` pid=12539** — take that PID straight to `ps -p 12539` or `kill`. **`127.0.0.1:42569`** = localhost-only (not exposed). An unexpected `0.0.0.0` LISTEN owned by an unfamiliar program is exactly how you spot a backdoor. (Deeper packet analysis of those sockets: [Tcpdump](../Recon%20Tools/Tcpdump.md).)
+Each `LISTEN` row is an open door. **`0.0.0.0:8080`** is reachable from the whole network and owned by **`python3` pid=12539**, so I can take that PID straight to `ps -p 12539` or `kill`. **`127.0.0.1:42569`** is localhost-only and not exposed. An unexpected `0.0.0.0` LISTEN owned by an unfamiliar program is exactly how you spot a backdoor. (Deeper packet analysis of those sockets: [Tcpdump](../Recon%20Tools/Tcpdump.md).)
 
-## Logged-in users & open files — who / w / lsof
+## Who's on the box: who / w / lsof
 Two more "who/what is on this box right now" questions: *who is logged in*, and *what files are open*.
 
 ```bash
@@ -138,9 +141,9 @@ w                   # same, PLUS what each user is running + system load
 users               # just the usernames, one line
 last                # login HISTORY (reads wtmp) — see Logs and journalctl
 ```
-→ `who`/`w` = *current* sessions; `last` = the *history*. On a box you just landed on, `w` instantly tells you if someone else is on it.
+`who`/`w` are *current* sessions; `last` is the *history*. On a box I just landed on, `w` instantly tells me if someone else is on it.
 
-**`lsof` — list open files.** Because Linux treats sockets, pipes and devices as files, one tool shows what a process has open *and* what it's connected to:
+`lsof` lists open files. Because Linux treats sockets, pipes and devices as files, this one tool shows what a process has open *and* what it's connected to:
 ```bash
 sudo lsof -u sam        # ← open files for a specific USER  (the JQR question)
 sudo lsof -i            # open network connections (file-oriented view, like ss)
@@ -148,17 +151,17 @@ sudo lsof -i :22        # who has port 22 open
 sudo lsof /var/log/syslog   # which processes hold THIS file open
 sudo lsof -p 1234       # every file open by PID 1234
 ```
-> **How do you specify open files by user?** → **`lsof -u <username>`**. Practical use: find *why a disk won't unmount* (something still has a file open there → `lsof /mnt/x`), or what a suspicious PID is touching.
+"How do you specify open files by user?" is **`lsof -u <username>`**. Practically I use it to find *why a disk won't unmount* (something still has a file open there, so `lsof /mnt/x`), or to see what a suspicious PID is touching.
 
-## Exam tips & gotchas
+## What I keep forgetting
 - **`enable --now`** is the one-liner they want for "make it run now and survive reboot."
-- Forgot **`daemon-reload`** after editing a unit → your change silently does nothing.
-- **SIGTERM (15) then SIGKILL (9)** — never lead with `-9`. State `D` won't die even with `-9`.
-- `ps aux` **and** `ps -ef` both exist — know both column sets; `PPID` only shows in `-ef`.
-- `sudo ss -tulpn` is the first thing to run on an unknown box: every listening port + its process.
+- Forget **`daemon-reload`** after editing a unit and your change silently does nothing.
+- **SIGTERM (15) then SIGKILL (9)**, never lead with `-9`. State `D` won't die even with `-9`.
+- `ps aux` **and** `ps -ef` both exist, so know both column sets; `PPID` only shows in `-ef`.
+- `sudo ss -tulpn` is the first thing I run on an unknown box: every listening port + its process.
 - `systemctl --failed` is the fastest "what's broken" triage.
 
-## References
+## Docs
 - `man 1 systemctl`, `man 1 top`, `man 1 ps`, `man 1 kill`, `man 8 ss`
 - systemd: https://systemd.io/  •  https://www.freedesktop.org/software/systemd/man/systemctl.html
 - signal(7): https://man7.org/linux/man-pages/man7/signal.7.html

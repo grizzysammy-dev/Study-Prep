@@ -1,15 +1,15 @@
 ---
 tags: [cyber, module1, linux, text]
-jqr: "Module 1 — learn RegEx for find/extract/replace across tools (grep, sed, Python re)"
+jqr: "Module 1: learn RegEx for find/extract/replace across tools (grep, sed, Python re)"
 ---
 
 # RegEx
 
-Regular expressions = a pattern language for finding, extracting, and replacing text. You'll use it constantly in `grep`, `sed`, `vim`, and Python. "Learn it. Live it. Love it." (Practice at the JQR's slash-escape game.)
+Regular expressions are a pattern language for finding, extracting, and replacing text. I use it constantly in `grep`, `sed`, `vim`, and Python. "Learn it. Live it. Love it." (I practice at the JQR's slash-escape game.)
 
-> **The mental model:** a regex describes the *shape* of text, not exact words — so instead of hunting for one specific string, you say "anything shaped like an IP address" or "a date like YYYY-MM-DD" and the engine finds every match at once. Under the hood it's a tiny state machine that walks the text left to right, trying to make your pattern fit. The same pattern language is bolted into grep, sed, vim, and Python's `re`, which is why learning it once pays off everywhere.
+> The way I think about it: a regex describes the shape of text, not exact words. So instead of hunting for one specific string, I say "anything shaped like an IP address" or "a date like YYYY-MM-DD" and the engine finds every match at once. Under the hood it's a tiny state machine that walks the text left to right, trying to make my pattern fit. The same pattern language is bolted into grep, sed, vim, and Python's `re`, which is why learning it once pays off everywhere.
 
-## TL;DR — the pieces you actually need
+## The pieces I actually use
 | Pattern | Matches |
 |---|---|
 | `.` | any single character |
@@ -36,9 +36,9 @@ re.findall(r"\d+\.\d+\.\d+\.\d+", text)      # all IPv4-looking strings
 re.sub(r"\s+", " ", text)                     # collapse whitespace
 m = re.search(r"user=(\w+)", line); m.group(1)  # capture the username
 ```
-→ In `vim`: `:%s/\d\+/NUM/g`. Basic `grep` needs `\+`/`\{}` escaped; `grep -E` (or `-P`) lets you write them plain — prefer `-E`.
+In `vim`: `:%s/\d\+/NUM/g`. Basic `grep` needs `\+`/`\{}` escaped, while `grep -E` (or `-P`) lets me write them plain, so I reach for `-E`.
 
-> **Why `grep -E` saves you backslashes:** plain grep speaks *Basic* regex (BRE), an older dialect where `+ ? { } ( ) |` are literal characters unless you escape them. `-E` (Extended) and `-P` (Perl) treat those as the operators you expect. Same pattern, different dialect — reach for `-E` and stop fighting the escaping.
+> Why `grep -E` saves me backslashes: plain grep speaks Basic regex (BRE), an older dialect where `+ ? { } ( ) |` are literal characters unless I escape them. `-E` (Extended) and `-P` (Perl) treat those as the operators I expect. Same pattern, different dialect, so I reach for `-E` and stop fighting the escaping.
 
 ## Worked patterns (copy these)
 ```
@@ -49,25 +49,25 @@ Date YYYY-MM-DD \d{4}-\d{2}-\d{2}
 Hex / hashes   \b[0-9a-fA-F]{32,}\b
 ```
 
-> **Where you've already met this:** every IDS signature, SIEM search, and log-redaction rule is regex under the hood — "alert when a line matches *this shape*." Writing a pattern to pull IPs out of a log is the same skill as writing the rule that flags them. You're learning the offense and defense sides of one coin at the same time.
+> Where I've already met this: every IDS signature, SIEM search, and log-redaction rule is regex under the hood, "alert when a line matches this shape." Writing a pattern to pull IPs out of a log is the same skill as writing the rule that flags them. I'm learning the offense and defense sides of one coin at the same time.
 
 ## Greedy vs lazy (the classic trap)
-- `.*` is **greedy** — grabs as much as possible.
-- `.*?` is **lazy** — grabs as little as possible.
+- `.*` is **greedy**, it grabs as much as possible.
+- `.*?` is **lazy**, it grabs as little as possible.
 - On `<a><b>`, the pattern `<.*>` matches the whole `<a><b>`; `<.*?>` matches just `<a>`.
 
-> **Why greedy is the trap:** `*` and `+` grab as much as they possibly can, then back off only if the match would otherwise fail — so `<.*>` swallows everything to the *last* `>` on the line. Adding `?` makes it lazy: stop at the first. This one default is behind more "why did my regex eat the whole line?" moments than anything else.
+> Why greedy is the trap: `*` and `+` grab as much as they possibly can, then back off only if the match would otherwise fail, so `<.*>` swallows everything to the last `>` on the line. Adding `?` makes it lazy: stop at the first. This one default is behind more "why did my regex eat the whole line?" moments than anything else.
 
-## Exam tips & gotchas
-- **`grep -E`** (extended) or **`grep -P`** (Perl, gives `\d`) saves you escaping `+ ? { } ( ) |`. Plain `grep` (BRE) needs backslashes.
-- Anchor your patterns (`^`, `$`, `\b`) or you'll match inside words you didn't mean to.
+## What keeps tripping me up
+- **`grep -E`** (extended) or **`grep -P`** (Perl, gives `\d`) saves me escaping `+ ? { } ( ) |`. Plain `grep` (BRE) needs backslashes.
+- Anchor my patterns (`^`, `$`, `\b`) or I'll match inside words I didn't mean to.
 - Escape literals that are also special: a real dot is `\.`, a real slash `\/`.
 - Test patterns against sample text before trusting them on real data (regex101.com is great for this).
 
 ## References
-- Slash Escape (JQR-named practice game) — https://www.therobinlord.com/projects/slash-escape
-- regex101 (interactive tester/explainer) — https://regex101.com
-- `grep`(1) / `sed`(1) man pages — https://man7.org/linux/man-pages/man1/grep.1.html
+- Slash Escape (JQR-named practice game): https://www.therobinlord.com/projects/slash-escape
+- regex101 (interactive tester/explainer): https://regex101.com
+- `grep`(1) / `sed`(1) man pages: https://man7.org/linux/man-pages/man1/grep.1.html
 
 ## Related
 - [Files Search and Permissions](../Linux%20Admin/Files%20Search%20and%20Permissions.md)

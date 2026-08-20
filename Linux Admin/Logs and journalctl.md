@@ -1,13 +1,13 @@
 ---
 tags: [cyber, module3, linux]
-jqr: "Module 3 — read and triage Linux logs: journalctl, /var/log, dmesg, syslog/rsyslog, wtmp/btmp/auth"
+jqr: "Module 3 - read and triage Linux logs: journalctl, /var/log, dmesg, syslog/rsyslog, wtmp/btmp/auth"
 ---
 
 # Logs and journalctl
 
-Where Linux writes what happened and how you read it under time pressure. As a defender this is home turf — but the exam box may be RHEL, so learn both filename sets.
+This is where Linux writes down what happened and how I read it when I'm under time pressure. As a defender this is home turf for me, but the exam box might be RHEL, so I need both filename sets in my head.
 
-## TL;DR
+## The quick set
 ```bash
 journalctl -xe                  # newest events + explanation text — the "why did it fail" combo
 journalctl -u ssh -b            # one service (ssh), this boot only
@@ -19,12 +19,12 @@ last / lastb                    # successful / FAILED logins (wtmp / btmp)
 - **Debian/Ubuntu:** auth → `/var/log/auth.log`, general → `/var/log/syslog`.
 - **RHEL/CentOS:** auth → `/var/log/secure`, general → `/var/log/messages`.
 
-## Concept
-Modern Linux keeps a **binary journal** (owned by `systemd-journald`) that you query with `journalctl` — you never `cat` it. Alongside it, classic text logs still live under `/var/log/`. A few login records (`wtmp`, `btmp`, `lastlog`) are also binary and need their own reader tools. Same events, three access paths: journal (query tool), text files (`less`/`grep`), binary login logs (`last`/`lastb`).
+## How Linux stores logs
+Modern Linux keeps a **binary journal** (owned by `systemd-journald`) that I query with `journalctl`, never `cat`. Alongside it, the classic text logs still live under `/var/log/`. A few login records (`wtmp`, `btmp`, `lastlog`) are also binary and need their own reader tools. So it's the same events reached three ways: the journal (query tool), text files (`less`/`grep`), and binary login logs (`last`/`lastb`).
 
-> **Why binary?** Each journal entry isn't a line of text — it's a bundle of structured fields (unit, PID, priority, boot ID, timestamp, and more). That's what lets `journalctl` filter instantly by any of them — `-u ssh`, `-p err`, `-b -1` — the way a database does, instead of you grepping raw strings. The trade: you can't `cat` it, but you rarely need to. *Blue-team caveat: this journal lives on the box, so whoever owns the box can also edit it — which is exactly why you ship a copy off-host (see rsyslog, below).*
+Why binary at all: each journal entry isn't a line of text, it's a bundle of structured fields (unit, PID, priority, boot ID, timestamp, and more). That's what lets `journalctl` filter instantly by any of them (`-u ssh`, `-p err`, `-b -1`) the way a database does, instead of me grepping raw strings. The trade is I can't `cat` it, but I rarely need to. One blue-team caveat: this journal lives on the box, so whoever owns the box can also edit it, which is exactly why you ship a copy off-host (see rsyslog, below).
 
-## journalctl — the systemd journal (look here first)
+## journalctl (look here first)
 ```bash
 journalctl                      # everything, oldest first (opens a pager — q to quit)
 journalctl -e                   # jump to the END (newest) — most useful default
@@ -44,15 +44,15 @@ journalctl --since "-30 min" --until "now"   # a window
 journalctl -k                   # KERNEL messages only (like dmesg)
 journalctl _PID=1               # filter by a field (PID 1 = systemd)
 ```
-→ `-u` scopes to one service, `-b` to one boot, `-p` to a severity floor, `-k` to the kernel. Stack them: `journalctl -u ssh -b -p err`.
+`-u` scopes to one service, `-b` to one boot, `-p` to a severity floor, `-k` to the kernel, and I can stack them: `journalctl -u ssh -b -p err`.
 
-**Priority levels (`-p` numbers), lowest = most severe:** `0 emerg, 1 alert, 2 crit, 3 err, 4 warning, 5 notice, 6 info, 7 debug`. So `-p err` = levels 0–3.
+Priority numbers for `-p`, lowest = most severe: `0 emerg, 1 alert, 2 crit, 3 err, 4 warning, 5 notice, 6 info, 7 debug`. So `-p err` is levels 0-3.
 
-**Reading `-xe`:** each line is `TIMESTAMP HOST unit[PID]: message`. The `x` adds `Subject:` / `Defined-By: systemd` hint lines explaining a failure and sometimes the fix.
+Reading `-xe`: each line is `TIMESTAMP HOST unit[PID]: message`, and the `x` adds `Subject:` / `Defined-By: systemd` hint lines explaining a failure and sometimes the fix.
 
-> **Gotcha:** the journal may be **volatile** (RAM only, wiped at reboot) if `/var/log/journal/` doesn't exist. Make it persistent: `sudo mkdir -p /var/log/journal && sudo systemctl restart systemd-journald`. Check size with `journalctl --disk-usage`.
+Quick reminder to myself: the journal can be **volatile** (RAM only, wiped at reboot) if `/var/log/journal/` doesn't exist. Make it persistent with `sudo mkdir -p /var/log/journal && sudo systemctl restart systemd-journald`, and check size with `journalctl --disk-usage`.
 
-## Where text logs live: /var/log
+## Text logs under /var/log
 Look around with `ls -lt /var/log` (newest first).
 
 | Contains | Debian/Ubuntu | RHEL/CentOS | Read with |
@@ -66,13 +66,14 @@ Look around with `ls -lt /var/log` (newest first).
 | Package manager | `/var/log/apt/` | `/var/log/dnf.log` | `less` |
 | Boot | `/var/log/boot.log` | `/var/log/boot.log` | `less` |
 
-> **KEY EXAM POINT — the Debian vs RHEL split:** auth events are `auth.log` (Debian) vs `secure` (RHEL); general messages are `syslog` (Debian) vs `messages` (RHEL). Same information, different filenames. Minimal installs may have *only* the journal — if a file is missing, fall back to `journalctl`.
+The Debian vs RHEL split is the thing they love to test: auth events are `auth.log` (Debian) vs `secure` (RHEL); general messages are `syslog` (Debian) vs `messages` (RHEL). Same information, different filenames. Minimal installs may have *only* the journal, so if a file is missing I just fall back to `journalctl`.
 
-Searching logs is a `grep` job — see [Files Search and Permissions](Files%20Search%20and%20Permissions.md) for `grep -rin`.
+Searching logs is a `grep` job. See [Files Search and Permissions](Files%20Search%20and%20Permissions.md) for `grep -rin`.
 
-## dmesg — kernel ring buffer
-Prints the **kernel's** messages: hardware detection, disks, USB plug/unplug, OOM kills, driver errors. The go-to for "did the OS see my new disk/NIC?"
-> **Why "ring buffer":** it's a fixed-size chunk of kernel memory that the kernel scribbles events into and *wraps around* when full — newest overwrites oldest. So `dmesg` is a live window, not an archive; anything worth keeping is copied to disk (the journal, `kern.log`) precisely because the buffer itself forgets. That's also why very early boot messages may have already scrolled off by the time you look.
+## dmesg (kernel ring buffer)
+Prints the **kernel's** messages: hardware detection, disks, USB plug/unplug, OOM kills, driver errors. My go-to for "did the OS actually see my new disk/NIC?"
+
+The "ring buffer" bit matters: it's a fixed-size chunk of kernel memory that the kernel scribbles events into and wraps around when full, so newest overwrites oldest. That makes `dmesg` a live window, not an archive; anything worth keeping gets copied to disk (the journal, `kern.log`) precisely because the buffer itself forgets. It's also why very early boot messages may have already scrolled off by the time I look.
 ```bash
 sudo dmesg                # may need root on hardened systems
 dmesg -T                  # human Timestamps (default is seconds-since-boot)
@@ -80,19 +81,19 @@ dmesg -w                  # Wait/follow live
 dmesg --level=err,warn    # only errors and warnings
 dmesg | grep -i sd        # find disk (sdX) events
 ```
-→ `journalctl -k` is the journal equivalent; `journalctl -k -b -1` shows the *previous* boot's kernel log (great for "why did it crash?").
+`journalctl -k` is the journal equivalent, and `journalctl -k -b -1` shows the *previous* boot's kernel log, which is great for "why did it crash?".
 
-## syslog / rsyslog — the classic logging service
-**syslog** is the decades-old standard for handing log messages to a collector, sorted by *facility* (auth, cron, mail, kern…) and *severity*. The daemon implementing it on most distros is **`rsyslog`**; it writes the `/var/log/*.log` files.
+## syslog / rsyslog
+**syslog** is the decades-old standard for handing log messages to a collector, sorted by *facility* (auth, cron, mail, kern...) and *severity*. The daemon implementing it on most distros is **`rsyslog`**, and it writes the `/var/log/*.log` files.
 - Config: **`/etc/rsyslog.conf`** and drop-ins in **`/etc/rsyslog.d/*.conf`**.
-- A line like `auth,authpriv.*   /var/log/auth.log` = "send auth facility, all severities, to that file."
+- A line like `auth,authpriv.*   /var/log/auth.log` means "send auth facility, all severities, to that file."
 - Service control: `sudo systemctl status rsyslog` / `restart rsyslog`.
 - On journald-only systems rsyslog may be absent; the journal does the same job.
 
-> rsyslog can also **forward logs over the network** (port **514**) to a central log server. That setup — templates, TCP vs UDP, TLS, the receiver side — lives in [rsyslog Remote Logging](rsyslog%20Remote%20Logging.md).
+rsyslog can also **forward logs over the network** (port **514**) to a central log server. That whole setup, templates, TCP vs UDP, TLS, the receiver side, lives in [rsyslog Remote Logging](rsyslog%20Remote%20Logging.md).
 
-## wtmp, btmp, and auth logs — who logged in
-Binary files — don't `cat` them, use their readers:
+## Who logged in: wtmp, btmp, auth
+These are binary files, so don't `cat` them, use their readers:
 ```bash
 last                 # /var/log/wtmp -> successful logins + reboots, newest first
 last -a              # show remote hostname/IP in the last column
@@ -102,19 +103,19 @@ sudo lastb           # /var/log/btmp -> FAILED logins — spot brute force (need
 sudo lastb -a
 lastlog              # /var/log/lastlog -> most recent login time for EVERY account
 ```
-**Reading `last`:** columns are `user  tty/pts  from-host  start—end  (duration)`. `pts/0` = a network/pseudo terminal (ssh); `tty1` = a physical console; `still logged in` = active now. For *current* sessions use `who` (live) and `w` (live + what they're running) — `last`/`lastb` are the historical record.
+Reading `last`: the columns are `user`, `tty/pts`, `from-host`, the start and end times, then `(duration)`. `pts/0` is a network/pseudo terminal (ssh); `tty1` is a physical console; `still logged in` means active right now. For *current* sessions I use `who` (live) and `w` (live + what they're running); `last`/`lastb` are the historical record.
 
-**Reading `lastb`:** same layout, every row a *failed* attempt — repeated rows from one IP against `ssh` = a brute-force. Correlate with `/var/log/auth.log` (Debian) or `/var/log/secure` (RHEL): `sudo grep -i "failed password" /var/log/auth.log`.
+Reading `lastb`: same layout, every row a *failed* attempt, so repeated rows from one IP against `ssh` is a brute-force. Correlate with `/var/log/auth.log` (Debian) or `/var/log/secure` (RHEL): `sudo grep -i "failed password" /var/log/auth.log`.
 
-## Exam tips & gotchas
-- **First move on any box:** `journalctl -xe`, then `journalctl -u <service> -b` for the thing you care about.
-- If a `/var/log` file "doesn't exist," you're probably on the *other* distro family or a journald-only minimal install — pivot to `journalctl`.
-- `journalctl -p err` uses the **numeric** priority floor (0–3), not the word for each line.
-- `lastb` needs **sudo** and `btmp` is often absent until the first failed login is recorded.
-- Don't `cat` `wtmp`/`btmp`/`lastlog` — they're binary and print garbage; use `last`/`lastb`/`lastlog`.
-- A journal that resets every reboot means `/var/log/journal/` is missing — create it for persistence.
+## What I keep forgetting
+- First move on any box: `journalctl -xe`, then `journalctl -u <service> -b` for the thing I actually care about.
+- If a `/var/log` file "doesn't exist," I'm probably on the *other* distro family or a journald-only minimal install, so pivot to `journalctl`.
+- `journalctl -p err` uses the **numeric** priority floor (0-3), not the word on each line.
+- `lastb` needs **sudo**, and `btmp` is often absent until the first failed login gets recorded.
+- Don't `cat` `wtmp`/`btmp`/`lastlog`; they're binary and print garbage. Use `last`/`lastb`/`lastlog`.
+- A journal that resets every reboot means `/var/log/journal/` is missing, so create it for persistence.
 
-## References
+## Docs
 - `man 1 journalctl`, `man 8 systemd-journald`
 - `man 1 dmesg`, `man 1 last`, `man 8 lastlog`
 - rsyslog docs: https://www.rsyslog.com/doc/

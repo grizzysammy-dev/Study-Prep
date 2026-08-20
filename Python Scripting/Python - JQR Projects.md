@@ -1,20 +1,20 @@
 ---
 tags: [cyber, module1, scripting, python]
-jqr: "Module 1 — two practical Python projects (choose two, put concepts into practice)"
+jqr: "Module 1: two practical Python projects (choose two, put the concepts into practice)"
 ---
 
 # Python - JQR Projects
 
-Two small, practical tools that exercise the Python basics from [Python Scripting](Python%20Scripting.md) — both **actually run** below. They lean defensive/recon so they double as study aids. Files live in `/scripts/`.
+Two small, practical tools that exercise the Python basics from [Python Scripting](Python%20Scripting.md), both actually run below. They lean defensive and recon so they double as study aids. The files live in `/scripts/`.
 
-> **What these two teach together:** the two halves of security scripting — *reach out* to the network (the port scanner opens sockets) and *make sense* of what a machine wrote down (the log parser turns messy text into a ranked list). Read them side by side: one generates the activity, the other detects it. That's your offense/defense pairing in ~15 lines each.
+> What these two teach together: the two halves of security scripting, reaching out to the network (the port scanner opens sockets) and making sense of what a machine wrote down (the log parser turns messy text into a ranked list). Read side by side, one generates the activity and the other detects it. That's the offense/defense pairing in ~15 lines each.
 
 ---
 
-## Project 1 — TCP port scanner
+## Project 1: TCP port scanner
 Concepts: `socket`, loops, `argparse`, string formatting.
 
-> **The mental model:** a *socket* is one end of a network conversation — your program's plug into the wire. "Scanning a port" is just trying to complete the TCP handshake with it: if something's listening, the connection succeeds; if nothing is, it's refused or times out. A port scan is knocking on every door and noting which ones open.
+> The way I picture it: a socket is one end of a network conversation, my program's plug into the wire. "Scanning a port" is just trying to complete the TCP handshake with it: if something's listening the connection succeeds, and if nothing is it's refused or times out. A port scan is knocking on every door and noting which ones open.
 
 ```python
 #!/usr/bin/env python3
@@ -34,7 +34,7 @@ for port in ports:
     s.close()
 ```
 
-> ✅ **Tested output** (Ubuntu 24.04, 2026): with a listener on 8080:
+I ran this on Ubuntu 24.04 (2026) with a listener on 8080 and got:
 ```
 Scanning 127.0.0.1 ...
      22/tcp  closed
@@ -42,11 +42,11 @@ Scanning 127.0.0.1 ...
     443/tcp  closed
    8080/tcp  OPEN
 ```
-→ `connect_ex()` returns `0` when the TCP handshake completes (port open). This is the Python version of what [Nmap](../Recon%20Tools/Nmap.md) does under the hood — good for understanding, use nmap for real work.
+`connect_ex()` returns `0` when the TCP handshake completes, meaning the port's open. This is the Python version of what [Nmap](../Recon%20Tools/Nmap.md) does under the hood, good for understanding but I use nmap for real work.
 
 ---
 
-## Project 2 — failed-login log parser (defensive)
+## Project 2: failed-login log parser (defensive)
 Concepts: file reading, `re` regex, `collections.Counter`.
 
 ```python
@@ -71,26 +71,26 @@ if not counts:
     print("  (no failed-login lines found)")
 ```
 
-> ✅ **Tested output** (Ubuntu 24.04, 2026): against a sample auth.log:
+I ran it on Ubuntu 24.04 (2026) against a sample auth.log:
 ```
 Top source IPs by failed SSH logins in /tmp/sample_auth.log:
      3  192.168.1.50
      1  10.0.0.9
 ```
-→ Ties straight into your defensive background: this is brute-force detection from [Logs and journalctl](../Linux%20Admin/Logs%20and%20journalctl.md). The regex captures user + source IP; `Counter.most_common()` ranks the noisiest attackers.
+This ties straight into my defensive background: it's brute-force detection, same idea as [Logs and journalctl](../Linux%20Admin/Logs%20and%20journalctl.md). The regex captures user and source IP, and `Counter.most_common()` ranks the noisiest attackers.
 
-> **Why this shape recurs:** almost all log analysis is the same three moves — read the lines, pull the fields you care about with a regex, tally them up. Swap the pattern and you're hunting failed sudo, odd user-agents, or beaconing intervals instead. This *is* the manual, one-file version of what a SIEM does across a whole fleet — which is why it maps so cleanly onto your defensive background.
+> Why this shape recurs: almost all log analysis is the same three moves, read the lines, pull the fields I care about with a regex, tally them up. Swap the pattern and I'm hunting failed sudo, odd user-agents, or beaconing intervals instead. This is the manual, one-file version of what a SIEM does across a whole fleet, which is why it maps so cleanly onto my defensive background.
 
-## Exam tips & gotchas
-- `socket.settimeout()` — without it a closed/filtered port hangs your scan.
+## Gotchas I want to remember
+- `socket.settimeout()`: without it a closed or filtered port hangs the whole scan.
 - Compile the regex once (`re.compile`) outside the loop for speed on big logs.
 - Wrap file opens in `try/except FileNotFoundError` so the tool fails cleanly.
-- These are learning tools; on the box use [Nmap](../Recon%20Tools/Nmap.md) and real log tooling for anything serious.
+- These are learning tools; on the box I use [Nmap](../Recon%20Tools/Nmap.md) and real log tooling for anything serious.
 
 ## References
-- Python `socket` — https://docs.python.org/3/library/socket.html
-- Python `re` — https://docs.python.org/3/library/re.html
-- Real Python projects — https://realpython.com/tutorials/projects/
+- Python `socket`: https://docs.python.org/3/library/socket.html
+- Python `re`: https://docs.python.org/3/library/re.html
+- Real Python projects: https://realpython.com/tutorials/projects/
 
 ## Related
 - [Python Scripting](Python%20Scripting.md)

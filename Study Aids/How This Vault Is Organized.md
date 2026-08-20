@@ -1,12 +1,12 @@
 ---
 tags: [cyber, meta]
-jqr: "Orientation — how the vault is laid out and how to navigate it"
+jqr: "How the vault is laid out and how to get around it"
 ---
 
 # How This Vault Is Organized
 
-## The idea
-Folders are grouped **by tool and by topic** — the way you actually reach for things on the box ("I need nmap" → `Recon Tools`; "iptables on CentOS" → `IP Tables CentOS`). It follows the repo structure you set up, filled in and tidied.
+## The layout
+The folders are grouped **by tool and by topic**, which is how I actually reach for things on the box. If I need nmap I go to `Recon Tools`; iptables on CentOS lives in `IP Tables CentOS`. It follows the repo structure I set up, just filled in and tidied.
 
 | Folder | What's in it |
 |---|---|
@@ -23,30 +23,25 @@ Folders are grouped **by tool and by topic** — the way you actually reach for 
 | `C2 Frameworks/Metasploit` | msfconsole workflow, msfvenom, meterpreter, SMB/PsExec/DCOM |
 | `Knowledge Req` | the "describe/explain" topics: kill chain, vulns, zero-days, pivoting, enum, privesc, sources, netsec devices, DevOps, cellular, 802.11 |
 
-## What changed (and where your old stuff went)
-Everything from the earlier layout was **moved, not deleted**. If you kept the earlier auto-generated numbered folders (`00–06`) or empty starter folders, they were moved to a `_OLD_repo_backup` folder **next to** the repo (outside it, so they don't clutter or get pushed) — delete that whenever you're happy.
+## What changed (and where my old stuff went)
+Everything from the earlier layout got **moved, not deleted**. Any of the old auto-generated numbered folders (`00-06`) or empty starter folders I had lying around got moved into a `_OLD_repo_backup` folder **next to** the repo (outside it, so it doesn't clutter things or get pushed). I can delete that whenever I'm happy it's all safe.
 
 | Old / starter folder | Now |
 |---|---|
-| `VM Set Up/Main Set Up.md` | `VM Set Up/VM Lab Setup.md` (your original notes kept inside) |
+| `VM Set Up/Main Set Up.md` | `VM Set Up/VM Lab Setup.md` (my original notes kept inside) |
 | `Bash Scripting/Vim and Github Setup.md` | split into `Vim/Vim.md` + `Git and GitHub/Git and GitHub.md` (originals kept) |
 | `Recon Tools/{Nmap,Netcat,TCPDUMP}/` subfolders | flattened to `Recon Tools/*.md` |
 | `Knowledge Req/*` subfolders | flattened to `Knowledge Req/*.md` |
 | `Exploit and Priv Esc Teq`, `Enum Tools and teq` | `Knowledge Req/Privilege Escalation Concepts.md`, `Enumeration Tools.md` |
 
 ## Reading a note
-Each note is built to be understood, not just copied:
-1. **Why this exists / mental model** — plain English first.
-2. **TL;DR** — the few commands/facts you must remember.
-3. **Task sections** — each command has a `→ what it does / what the output means` line.
-4. **Exam tips & gotchas** — the traps.
-5. **References** — official sources.
+Each note is built to be understood, not just copied. They open with plain English on why the thing exists and the mental model, then the handful of commands or facts I actually need to remember, then the commands themselves with a note on what each one does and what the output means. After that come the exam traps and gotchas, and the official sources at the bottom.
 
-**Callouts:** `✅ Tested output` = actually run, real output pasted. `🧪 Run this on your lab` = correct per current docs, needs your Windows VM / a second host / root.
+When you see real output pasted into a note, that means I actually ran it and grabbed what came back. When something's only correct per the current docs and I haven't run it myself yet, I say so in plain words. Usually that means it needs my Windows VM, a second host, or root.
 
 ## GitHub vs Obsidian
-- **GitHub** (open-book exam): start at the [README](../README.md) — all links click. GitHub doesn't render Obsidian `[[wikilinks]]` or dataview, so every link in this vault is a normal Markdown link that works in both places.
+- **GitHub** (open-book exam): start at the [README](../README.md) and every link clicks through. GitHub doesn't render Obsidian `[[wikilinks]]` or dataview, so I made every link in this vault a normal Markdown link that works in both places.
 - **Obsidian:** graph view, Omnisearch, and the [Master Index](Master%20Index%20%28MOC%29.md).
 
 ## Pushing
-Edit in Obsidian → **Obsidian Git: commit-and-sync** (gitpush). Keep the repo **public** (JQR requirement); never commit keys/tokens/`_loot/` (the `.gitignore` covers them). See [Git and GitHub](../Git%20and%20GitHub/Git%20and%20GitHub.md).
+I edit in Obsidian, then run **Obsidian Git: commit-and-sync** (gitpush). Keep the repo **public** (that's a JQR requirement), and never commit keys, tokens, or `_loot/` (the `.gitignore` covers those). See [Git and GitHub](../Git%20and%20GitHub/Git%20and%20GitHub.md).

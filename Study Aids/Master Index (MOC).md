@@ -1,11 +1,11 @@
 ---
 tags: [cyber, moc]
-jqr: "Map of Content — every note, grouped by the repo's tool/topic folders"
+jqr: "Map of every note, grouped by the repo's tool and topic folders"
 ---
 
 # Master Index
 
-Every note in the vault, grouped by folder. On **GitHub** the repo [README](../README.md) is the same map and always renders on the landing page. In **Obsidian**, the dataview list at the bottom auto-updates as you add notes.
+Every note in the vault, grouped by folder. On **GitHub** the repo [README](../README.md) is this same map, and it always renders on the landing page. In **Obsidian**, the dataview list at the bottom updates itself as I add notes.
 
 ## Study Aids
 [Study Guide Questions & Answers](Study%20Guide%20Questions%20and%20Answers.md) · [JQR Progress Checklist](JQR%20Progress%20Checklist.md) · [Exam-Day Quick Reference](Exam-Day%20Quick%20Reference.md) · [Command Cheat Sheet](Command%20Cheat%20Sheet.md) · [How This Vault Is Organized](How%20This%20Vault%20Is%20Organized.md) · [References and Sources](References%20and%20Sources.md)
@@ -45,4 +45,4 @@ Every note in the vault, grouped by folder. On **GitHub** the repo [README](../R
 > WHERE file.name != "README"
 > SORT file.folder ASC, file.name ASC
 > ```
-> (On GitHub this shows as a code block — use the groups above.)
+> (On GitHub this just shows up as a code block, so use the groups above.)
