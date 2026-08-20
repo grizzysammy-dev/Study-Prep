@@ -59,9 +59,9 @@ Concepts shown: `read -p` input, variables, quoting, and a here-block of `echo`s
 d="${1:-/tmp/lab_demo}"   # folder to check specifically (1st arg, or a default)
 f="${2:-notes.txt}"      # file to look for specifically (2nd arg, or a default)
 
-if [ -d "$d" ]; then #if the directory then.
+if [ -d "$d" ]; then #if the directory then. -d = directory
   echo "The Directory '$d' exists." #print the directory exists
-  if [ -f "$d/$f" ]; then #print if the file exists in the directory already
+  if [ -f "$d/$f" ]; then #print if the file exists in the directory already. -f = file
     echo "THe File '$d' already exists in '$d'."
   else #if the file does not exits in that directory then...
     touch "$d/$f" #create the file
