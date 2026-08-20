@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, scripting, linux]
+tags: [cyber, module1, scripting, linux]
 jqr: "Module 1 — the two required Bash projects: nmap-command generator + directory/file checker"
 ---
 
@@ -55,7 +55,7 @@ Save all formats            : sudo nmap -sV -p 22,80,443 -oA scan_192.168.1.20 1
 ```bash
 #!/bin/bash
 # dir-file-check.sh - check dir exists; if so check file; create file if missing
-DIR="${1:-/tmp/jcu_demo}"          # 1st arg, or default
+DIR="${1:-/tmp/lab_demo}"          # 1st arg, or default
 FILE="${2:-notes.txt}"             # 2nd arg, or default
 if [ -d "$DIR" ]; then
     echo "[+] Directory '$DIR' exists."
@@ -75,11 +75,11 @@ fi
 > ✅ **Tested output** (Ubuntu 24.04, 2026): run twice — first creates, second finds:
 ```
 --- run 1 (nothing exists yet) ---
-[-] Directory '/tmp/jcu_demo' does not exist. Creating it and the file.
-[!] Created directory '/tmp/jcu_demo' and file 'report.txt'.
+[-] Directory '/tmp/lab_demo' does not exist. Creating it and the file.
+[!] Created directory '/tmp/lab_demo' and file 'report.txt'.
 --- run 2 (now it exists) ---
-[+] Directory '/tmp/jcu_demo' exists.
-[+] File 'report.txt' already exists in '/tmp/jcu_demo'.
+[+] Directory '/tmp/lab_demo' exists.
+[+] File 'report.txt' already exists in '/tmp/lab_demo'.
 ```
 **Concepts shown:** `-d`/`-f` file tests, nested `if`, `${1:-default}` argument defaults, `mkdir -p`, `touch`, `&&`.
 

@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, linux]
+tags: [cyber, module3, linux]
 jqr: "Module 3 — read and triage Linux logs: journalctl, /var/log, dmesg, syslog/rsyslog, wtmp/btmp/auth"
 ---
 

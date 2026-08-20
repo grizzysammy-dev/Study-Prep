@@ -1,5 +1,5 @@
 ---
-tags: [jcu, examday]
+tags: [cyber, examday]
 jqr: "Highest-yield facts, sequences, and gotchas across every module"
 ---
 

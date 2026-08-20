@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, metasploit]
+tags: [cyber, module3, metasploit]
 jqr: "Module 3 — SMB scanning (smb_version/enumshares/login), SMB::ProtocolVersion, PsExec + pass-the-hash, DCOM lateral movement"
 ---
 

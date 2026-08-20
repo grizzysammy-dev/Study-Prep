@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module2, knowledge, networking]
+tags: [cyber, module2, knowledge, networking]
 jqr: "Describe cellular technology generations (1G-5G), core standards (GSM/CDMA/LTE/5G NR), subscriber/device identity (SIM/IMSI/IMEI), base stations, and cellular attacks (IMSI catchers, SS7)."
 ---
 

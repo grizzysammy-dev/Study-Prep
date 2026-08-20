@@ -1,5 +1,5 @@
 ---
-tags: [jcu, references]
+tags: [cyber, references]
 jqr: "Consolidated authoritative sources used across the vault (official docs + JQR-named tutorials)"
 ---
 

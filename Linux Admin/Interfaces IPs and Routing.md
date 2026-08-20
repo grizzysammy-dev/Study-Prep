@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, networking]
+tags: [cyber, module3, networking]
 jqr: "Configure interfaces (DHCP/static) via netplan, /etc/network/interfaces, nmcli; /etc/networks; add persistent static routes; enable IPv4/IPv6 forwarding"
 ---
 

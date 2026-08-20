@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module2, knowledge]
+tags: [cyber, module2, knowledge]
 jqr: "Describe common software vulnerability classes (memory-corruption and web/app-logic), the memory-corruption-to-code-execution idea, and map them to OWASP Top 10 (2025, cross-ref 2021) and CWE."
 ---
 

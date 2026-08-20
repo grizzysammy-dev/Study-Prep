@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, scripting, linux]
+tags: [cyber, module1, scripting, linux]
 jqr: "Module 1 — Bash scripting fundamentals on the Ubuntu VM (variables, conditionals, loops, arguments, cron)"
 ---
 

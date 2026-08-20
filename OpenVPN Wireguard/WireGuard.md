@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, recon, networking]
+tags: [cyber, module3, recon, networking]
 jqr: "Encrypted tunneling — build and verify a minimal WireGuard tunnel between two lab peers (wg0.conf, wg-quick up, wg show)"
 ---
 

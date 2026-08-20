@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, recon, networking]
+tags: [cyber, module3, recon, networking]
 jqr: "Secure remote administration over SSH — connect (non-standard port, IPv6), agent forwarding, ProxyJump/jump hosts, and -L/-R/-D port forwarding"
 ---
 

@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, recon, networking]
+tags: [cyber, module3, recon, networking]
 jqr: "Recon with Nmap — host discovery, TCP/UDP + service/version/OS scanning, NSE scripts, and -oA output"
 ---
 

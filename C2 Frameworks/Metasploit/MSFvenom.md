@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, metasploit]
+tags: [cyber, module1, metasploit]
 jqr: "Module 1 — generate standalone payloads with msfvenom and catch them with exploit/multi/handler"
 ---
 

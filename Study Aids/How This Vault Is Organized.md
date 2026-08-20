@@ -1,5 +1,5 @@
 ---
-tags: [jcu, meta]
+tags: [cyber, meta]
 jqr: "Orientation — how the vault is laid out and how to navigate it"
 ---
 

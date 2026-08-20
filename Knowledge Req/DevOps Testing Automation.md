@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module2, knowledge]
+tags: [cyber, module2, knowledge]
 jqr: "Describe DevOps testing automation — CI/CD, IaC, and DevSecOps — with a balanced view of its benefits and challenges."
 ---
 

@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, linux]
+tags: [cyber, module3, linux]
 jqr: "Module 3 — schedule recurring jobs with cron: crontab -e/-l, the 5 time fields, @reboot, system cron dirs"
 ---
 

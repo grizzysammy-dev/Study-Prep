@@ -1,6 +1,6 @@
 #!/bin/bash
 # JQR Bash Project 2 - check dir exists; if so check file; create file if missing
-DIR="${1:-/tmp/jcu_demo}"
+DIR="${1:-/tmp/lab_demo}"
 FILE="${2:-notes.txt}"
 if [ -d "$DIR" ]; then
     echo "[+] Directory '$DIR' exists."

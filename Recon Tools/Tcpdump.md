@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, recon, networking]
+tags: [cyber, module3, recon, networking]
 jqr: "Tcpdump — packet capture with BPF filters, read payloads, prove cleartext vs encrypted, write/read pcap (-w/-r), and troubleshoot connectivity"
 ---
 

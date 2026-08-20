@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, linux]
+tags: [cyber, module3, linux]
 jqr: "Module 3 — install/remove/query software: apt, dnf/yum, dpkg, rpm, pip+PEP 668, wheels, repo config"
 ---
 

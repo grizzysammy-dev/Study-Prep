@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, module3, windows]
+tags: [cyber, module1, module3, windows]
 jqr: "PowerShell equivalents for admin tasks: verb-noun cmdlet model; Get-LocalUser/New-LocalUser, Get/New-LocalGroup, Get/New-SmbShare, Get/Set-Content, Get-Process/Stop-Process, execution policy"
 ---
 

@@ -1,5 +1,5 @@
 ---
-tags: [jcu, moc]
+tags: [cyber, moc]
 jqr: "Map of Content — every note, grouped by the repo's tool/topic folders"
 ---
 

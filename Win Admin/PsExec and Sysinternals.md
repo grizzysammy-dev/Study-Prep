@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, windows]
+tags: [cyber, module3, windows]
 jqr: "PsExec (Sysinternals): official download; remote command execution; -s run as SYSTEM; -c copy-and-run; understand why EDR flags it and its legitimate admin/IR use"
 ---
 

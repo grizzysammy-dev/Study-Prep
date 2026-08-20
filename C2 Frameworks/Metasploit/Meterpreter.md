@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, metasploit]
+tags: [cyber, module1, metasploit]
 jqr: "Module 1 — Meterpreter payload/agent: core post-exploitation commands, shell vs meterpreter, staged/stageless, reverse/bind"
 ---
 

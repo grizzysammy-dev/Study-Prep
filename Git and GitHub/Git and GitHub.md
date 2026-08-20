@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, git]
+tags: [cyber, module1, git]
 jqr: "Module 1 — create a GitHub account and keep your Bash/Python work in PUBLIC repos for instructors to review"
 ---
 

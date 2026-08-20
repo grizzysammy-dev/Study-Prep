@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, recon, networking]
+tags: [cyber, module3, recon, networking]
 jqr: "Secure file transfer with scp — local<->remote, recursive (-r), non-standard port (-P), IPv6 brackets, and the rsync-over-SSH alternative"
 ---
 

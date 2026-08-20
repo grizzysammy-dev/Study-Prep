@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, networking]
+tags: [cyber, module3, networking]
 jqr: "Module 3 — the 7-layer OSI model: layers, protocols, devices, mnemonic, and mapping to TCP/IP"
 ---
 

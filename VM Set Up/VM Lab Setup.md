@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, setup]
+tags: [cyber, module1, setup]
 jqr: "Module 1 — Install VMware and procure the 4 required VMs (Ubuntu, Kali, Windows 11, Debian); build a safe lab network"
 ---
 

@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, recon]
+tags: [cyber, module3, recon]
 jqr: "Module 3 — enumeration & privesc-discovery tooling: enum4linux(-ng), PEASS-ng (linpeas/winPEAS), WindowsEnum, JAWS"
 ---
 

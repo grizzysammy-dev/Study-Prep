@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module2, knowledge]
+tags: [cyber, module2, knowledge]
 jqr: "Describe the Lockheed Martin Cyber Kill Chain (7 stages) with a defensive countermeasure at each stage; contrast it with MITRE ATT&CK and the Unified Kill Chain."
 ---
 

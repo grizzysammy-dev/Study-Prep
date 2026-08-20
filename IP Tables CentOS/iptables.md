@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, networking]
+tags: [cyber, module1, networking]
 jqr: "Build a safe default-deny iptables host firewall (+established), NAT/SNAT/MASQUERADE and DNAT/redirect between subnets, LOG drops, and persist rules on Debian/Ubuntu and CentOS"
 ---
 
@@ -75,18 +75,18 @@ sudo iptables -P OUTPUT ACCEPT                                     #    usually 
 ```
 → Safety net before flipping to DROP on a box you could lose: `sudo sh -c 'sleep 300 && iptables -F' &` auto-flushes in 5 min if you strand yourself.
 
-> ✅ **Tested output** (Ubuntu 24.04, 2026): the same allow-SSH/HTTP/HTTPS/ICMP + established, then log-and-drop logic, built into a custom chain `JCUDEMO` and dumped with `iptables -S`:
+> ✅ **Tested output** (Ubuntu 24.04, 2026): the same allow-SSH/HTTP/HTTPS/ICMP + established, then log-and-drop logic, built into a custom chain `LABDEMO` and dumped with `iptables -S`:
 ```
-$ iptables -S JCUDEMO
--N JCUDEMO
--A JCUDEMO -i lo -j ACCEPT
--A JCUDEMO -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
--A JCUDEMO -p tcp -m tcp --dport 22 -j ACCEPT
--A JCUDEMO -p tcp -m tcp --dport 80 -j ACCEPT
--A JCUDEMO -p tcp -m tcp --dport 443 -j ACCEPT
--A JCUDEMO -p icmp -j ACCEPT
--A JCUDEMO -j LOG --log-prefix "DROP-JCU: "
--A JCUDEMO -j DROP
+$ iptables -S LABDEMO
+-N LABDEMO
+-A LABDEMO -i lo -j ACCEPT
+-A LABDEMO -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A LABDEMO -p tcp -m tcp --dport 22 -j ACCEPT
+-A LABDEMO -p tcp -m tcp --dport 80 -j ACCEPT
+-A LABDEMO -p tcp -m tcp --dport 443 -j ACCEPT
+-A LABDEMO -p icmp -j ACCEPT
+-A LABDEMO -j LOG --log-prefix "DROP-LAB: "
+-A LABDEMO -j DROP
 ```
 → `-S` prints rules **as the `iptables -A …` commands that recreate them** — the fastest way to screenshot/verify your build. Note the order is exactly the sequence above: loopback → established → service ports → LOG → DROP.
 

@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, linux]
+tags: [cyber, module3, linux]
 jqr: "Module 3 — the Filesystem Hierarchy Standard (key top-level dirs), man page sections, and which/type/whereis"
 ---
 

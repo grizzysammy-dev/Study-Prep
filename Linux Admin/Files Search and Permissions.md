@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, linux]
+tags: [cyber, module3, linux]
 jqr: "Module 3 — find/locate/grep, cp, dd; chmod/chown + reading permission strings; tar/xz/7z/zip archiving"
 ---
 

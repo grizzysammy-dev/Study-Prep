@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, module3, windows]
+tags: [cyber, module1, module3, windows]
 jqr: "Event Viewer log categories (Application/Security/System/Setup/Forwarded); key logon IDs 4624/4625; read logs with wevtutil and Get-WinEvent; schedule tasks with schtasks, Register-ScheduledTask, taskschd.msc"
 ---
 

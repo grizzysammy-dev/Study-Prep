@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, linux, terminal]
+tags: [cyber, module1, linux, terminal]
 jqr: "Module 1 — pick Terminator or tmux and use it proficiently every session"
 ---
 

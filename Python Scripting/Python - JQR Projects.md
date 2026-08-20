@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, scripting, python]
+tags: [cyber, module1, scripting, python]
 jqr: "Module 1 — two practical Python projects (choose two, put concepts into practice)"
 ---
 

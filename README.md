@@ -1,6 +1,6 @@
-#— Study Vault
+# Cyber Candidate — Study Vault
 
-Organized by tool and topic (the way I built the repo), so I can jump straight to the thing I'm working on. Built in [Obsidian](https://obsidian.md), synced here so it's readable during prep and open-book work — when the only thing I can pull up is this public repo.
+My study notes for the **Cyber Candidate JQR**. Organized by tool and topic (the way I built the repo), so I can jump straight to the thing I'm working on. Built in [Obsidian](https://obsidian.md), synced here so it's readable during prep and open-book work — when the only thing I can pull up is this public repo.
 
 > **Fast start:** open the **[Command Cheat Sheet](Study%20Aids/Command%20Cheat%20Sheet.md)** and **[Exam-Day Quick Reference](Study%20Aids/Exam-Day%20Quick%20Reference.md)**. Track what I can actually *do* in the **[JQR Progress Checklist](Study%20Aids/JQR%20Progress%20Checklist.md)**.
 

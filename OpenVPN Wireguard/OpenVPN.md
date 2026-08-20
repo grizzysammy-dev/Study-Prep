@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, recon, networking]
+tags: [cyber, module3, recon, networking]
 jqr: "Encrypted tunneling — build and verify a static-key point-to-point OpenVPN tunnel between two lab VMs"
 ---
 

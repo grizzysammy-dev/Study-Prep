@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module2, knowledge, networking]
+tags: [cyber, module2, knowledge, networking]
 jqr: "Describe network security devices and controls (firewall/NGFW, IDS vs IPS, EDR/XDR, PSP, proxy, WAF, SIEM, DLP, NAC, honeypot) and detection/prevention techniques (signature vs anomaly, segmentation, allow/deny-listing)."
 ---
 

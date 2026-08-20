@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, linux]
+tags: [cyber, module3, linux]
 jqr: "Configure an rsyslog client to forward logs (@@ TCP / @ UDP) and a server to receive them (imtcp/imudp); restart, verify end-to-end, and explain the use case"
 ---
 

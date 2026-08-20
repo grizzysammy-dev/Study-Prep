@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, module3, windows]
+tags: [cyber, module1, module3, windows]
 jqr: "Processes: tasklist/taskkill and Get-Process/Stop-Process; find where a process runs from (Get-CimInstance Win32_Process ExecutablePath; wmic removed 2026); systeminfo/Get-ComputerInfo; map a network drive; GUI file manipulation"
 ---
 

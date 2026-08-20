@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, module3, windows]
+tags: [cyber, module1, module3, windows]
 jqr: "Windows CLI (cmd.exe): full net command family (user/localgroup/share/use/view/accounts/start/stop/session/statistics); list & create local users, groups, shares; CLI file tasks (find/read/create/permissions)"
 ---
 

@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, module3, windows]
+tags: [cyber, module1, module3, windows]
 jqr: "NTFS permissions with icacls: view; grant/deny/remove; recursive /T; /reset; inheritance flags (OI)(CI)(IO) and /inheritance; plus the GUI Security tab"
 ---
 

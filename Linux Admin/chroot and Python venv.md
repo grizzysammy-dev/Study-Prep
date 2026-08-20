@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, linux]
+tags: [cyber, module3, linux]
 jqr: "Module 3 — chroot into another root (repair/recovery) and isolate Python deps with venv (PEP 668)"
 ---
 

@@ -1,5 +1,5 @@
 ---
-tags: [jcu, cheatsheet]
+tags: [cyber, cheatsheet]
 jqr: "Dense command reference across all tools"
 ---
 

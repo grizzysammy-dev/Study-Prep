@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, linux, editor]
+tags: [cyber, module1, linux, editor]
 jqr: "Module 1 — VIM Adventures; be able to open, edit, save, and quit files in vim"
 ---
 

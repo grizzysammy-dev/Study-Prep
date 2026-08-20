@@ -1,5 +1,5 @@
 ---
-tags: [jcu, checklist]
+tags: [cyber, checklist]
 jqr: "Every JQR requirement as a checkbox, linked to the note that covers it"
 ---
 

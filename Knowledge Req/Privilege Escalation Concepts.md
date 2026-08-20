@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module2, privesc]
+tags: [cyber, module2, privesc]
 jqr: "Module 2 — exploitation vs privilege escalation; vertical/horizontal; Linux & Windows privesc vectors; GTFOBins/LOLBAS toolset map"
 ---
 

@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module2, knowledge, networking]
+tags: [cyber, module2, knowledge, networking]
 jqr: "Define pivoting and tunneling, distinguish them, and describe when to use SSH, iptables, OpenVPN, WireGuard, and Chisel."
 ---
 

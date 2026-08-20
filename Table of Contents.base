@@ -1,17 +1,17 @@
 filters:
-  and:
-    - 'file.ext == "md"'
+ and:
+ - file.ext == "md"
 properties:
-  file.name:
-    displayName: Note
-  file.folder:
-    displayName: Section
+ file.name:
+ displayName: Note
+ file.folder:
+ displayName: Section
 views:
-  - type: table
-    name: Table of Contents
-    groupBy:
-      property: file.folder
-      direction: ASC
-    order:
-      - file.name
-      - file.folder
+ - type: table
+ name: Table of Contents
+ groupBy:
+ property: file.folder
+ direction: ASC
+ order:
+ - file.name
+ - file.folder

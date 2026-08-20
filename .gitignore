@@ -5,5 +5,5 @@ _to_delete/
 *.ovpn
 wg0.conf
 *.pcap
-_jcu_delivery*.tar.gz
+*.tar.gz
 .obsidian/workspace.json

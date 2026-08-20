@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, recon, networking]
+tags: [cyber, module3, recon, networking]
 jqr: "Netcat — raw TCP/UDP read/write: banner grab, listeners, file transfer, port checks, bind/reverse shells, and variant differences"
 ---
 

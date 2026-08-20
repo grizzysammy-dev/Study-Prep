@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, recon, networking]
+tags: [cyber, module3, recon, networking]
 jqr: "Awareness of HTTP/WebSocket tunneling (Chisel) — client/server model, when it's used, and how a defender detects it"
 ---
 

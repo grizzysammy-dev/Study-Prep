@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, windows, networking]
+tags: [cyber, module3, windows, networking]
 jqr: "Windows Defender Firewall: disable via GUI (wf.msc) + netsh advfirewall + Set-NetFirewallProfile; add an allow rule via netsh and New-NetFirewallRule"
 ---
 

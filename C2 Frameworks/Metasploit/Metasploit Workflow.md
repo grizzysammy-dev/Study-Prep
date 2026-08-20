@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, metasploit]
+tags: [cyber, module1, metasploit]
 jqr: "Module 1 — Metasploit framework workflow: DB init/status, msfconsole, search → use → show → set → run/exploit"
 ---
 

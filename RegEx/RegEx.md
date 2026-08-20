@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module1, linux, text]
+tags: [cyber, module1, linux, text]
 jqr: "Module 1 — learn RegEx for find/extract/replace across tools (grep, sed, Python re)"
 ---
 

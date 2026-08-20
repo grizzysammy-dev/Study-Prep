@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, windows, networking]
+tags: [cyber, module3, windows, networking]
 jqr: "Configure Windows interfaces: two NICs, static IP via GUI (ncpa.cpl) + netsh + New-NetIPAddress; persistent routes (route -p / New-NetRoute); IPv6; troubleshoot with ipconfig/getmac/tracert/nbtstat"
 ---
 

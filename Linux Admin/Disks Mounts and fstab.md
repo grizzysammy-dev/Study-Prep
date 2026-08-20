@@ -1,5 +1,5 @@
 ---
-tags: [jcu, module3, linux]
+tags: [cyber, module3, linux]
 jqr: "Module 3 — mount CIFS/ISO, persist mounts in /etc/fstab (_netdev), partition (parted), fsck, GRUB boot order"
 ---
 
