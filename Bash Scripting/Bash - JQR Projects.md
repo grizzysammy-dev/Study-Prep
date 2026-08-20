@@ -68,7 +68,7 @@ if [ -d "$d" ]; then #if the directory then. -d = directory
     echo "The File '$f' wasn't there, so I created it." #tell me the file has been created
   fi #finished
 else
-  echo "[-] Directory '$d' does not exist — nothing created." #debug print, directory not real
+  echo "The Directory '$d' does not exist — nothing created." #debug print, directory not real
 fi
 ```
 
@@ -95,24 +95,24 @@ Concepts shown: `-d`/`-f` file tests, a nested `if`, `${1:-default}` argument de
 ```bash
 #!/bin/bash
 # setup.sh - bring up networking, update, open terminals, open Firefox
-set -e
+set -e # if any command fails, stop the script with error. Safety Net
 
-# 1) Interfaces — apply your network config (netplan on Ubuntu; ifupdown on Debian)
+# set up net Interfaces — apply your network config (netplan on Ubuntu; ifupdown on Debian)
 sudo netplan apply 2>/dev/null || sudo systemctl restart networking
 
-# 2) Update the system
+# Update and upgrade
 sudo apt update && sudo apt -y upgrade
 
-# 3) Open terminals — a detached tmux session split into panes
+# Open terminals — a detached tmux session
 tmux new-session -d -s work
 tmux split-window -h
 tmux split-window -v
-#   (attach with: tmux attach -t work   — or launch Terminator instead: terminator &)
+#  attach with: tmux attach -t work   — or launch Terminator instead: terminator &
 
-# 4) Open Firefox to the study repo
+# Open Firefox to the study repo
 firefox "https://github.com/grizzysammy-dev/Study-Prep" >/dev/null 2>&1 &
 
-echo "[+] Network applied, system updated, tmux 'work' ready, Firefox launched."
+echo "Network applied, system updated, tmux 'work' ready, Firefox launched."
 ```
 Concepts shown: `set -e` (stop on error), `||` fallback, `&&` chaining, backgrounding with `&`, and scripting [tmux](../Terminator%20TMUX/tmux%20and%20Terminator.md). Swap the tmux block for `terminator &` if I went with Terminator.
 
