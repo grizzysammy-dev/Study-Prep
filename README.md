@@ -11,6 +11,7 @@ My study notes for the **Cyber Candidate JQR**. Organized by tool and topic (the
 ## Study Aids
 - [Master Index](Study%20Aids/Master%20Index%20%28MOC%29.md) — every note in one map
 - [JQR Progress Checklist](Study%20Aids/JQR%20Progress%20Checklist.md) — every requirement as a checkbox
+- [Study Guide Questions & Answers](Study%20Aids/Study%20Guide%20Questions%20and%20Answers.md) — a basic answer to every question the study guide asks
 - [Exam-Day Quick Reference](Study%20Aids/Exam-Day%20Quick%20Reference.md) · [Command Cheat Sheet](Study%20Aids/Command%20Cheat%20Sheet.md)
 - [How This Vault Is Organized](Study%20Aids/How%20This%20Vault%20Is%20Organized.md) · [References and Sources](Study%20Aids/References%20and%20Sources.md)
 

@@ -8,7 +8,7 @@ jqr: "Map of Content — every note, grouped by the repo's tool/topic folders"
 Every note in the vault, grouped by folder. On **GitHub** the repo [README](../README.md) is the same map and always renders on the landing page. In **Obsidian**, the dataview list at the bottom auto-updates as you add notes.
 
 ## Study Aids
-[JQR Progress Checklist](JQR%20Progress%20Checklist.md) · [Exam-Day Quick Reference](Exam-Day%20Quick%20Reference.md) · [Command Cheat Sheet](Command%20Cheat%20Sheet.md) · [How This Vault Is Organized](How%20This%20Vault%20Is%20Organized.md) · [References and Sources](References%20and%20Sources.md)
+[Study Guide Questions & Answers](Study%20Guide%20Questions%20and%20Answers.md) · [JQR Progress Checklist](JQR%20Progress%20Checklist.md) · [Exam-Day Quick Reference](Exam-Day%20Quick%20Reference.md) · [Command Cheat Sheet](Command%20Cheat%20Sheet.md) · [How This Vault Is Organized](How%20This%20Vault%20Is%20Organized.md) · [References and Sources](References%20and%20Sources.md)
 
 ## Setup & Fundamentals
 [VM Lab Setup](../VM%20Set%20Up/VM%20Lab%20Setup.md) · [Bash Scripting](../Bash%20Scripting/Bash%20Scripting.md) · [Bash - JQR Projects](../Bash%20Scripting/Bash%20-%20JQR%20Projects.md) · [Python Scripting](../Python%20Scripting/Python%20Scripting.md) · [Python - JQR Projects](../Python%20Scripting/Python%20-%20JQR%20Projects.md) · [Vim](../Vim/Vim.md) · [Git and GitHub](../Git%20and%20GitHub/Git%20and%20GitHub.md) · [RegEx](../RegEx/RegEx.md) · [tmux and Terminator](../Terminator%20TMUX/tmux%20and%20Terminator.md)
