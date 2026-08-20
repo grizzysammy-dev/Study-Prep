@@ -129,6 +129,27 @@ tcp   LISTEN 0      5            0.0.0.0:8080       0.0.0.0:*    users:(("python
 ```
 → Each `LISTEN` row is an open door. **`0.0.0.0:8080`** = reachable from the whole network and owned by **`python3` pid=12539** — take that PID straight to `ps -p 12539` or `kill`. **`127.0.0.1:42569`** = localhost-only (not exposed). An unexpected `0.0.0.0` LISTEN owned by an unfamiliar program is exactly how you spot a backdoor. (Deeper packet analysis of those sockets: [Tcpdump](../Recon%20Tools/Tcpdump.md).)
 
+## Logged-in users & open files — who / w / lsof
+Two more "who/what is on this box right now" questions: *who is logged in*, and *what files are open*.
+
+```bash
+who                 # who's logged in now: user, terminal, login time, source IP
+w                   # same, PLUS what each user is running + system load
+users               # just the usernames, one line
+last                # login HISTORY (reads wtmp) — see Logs and journalctl
+```
+→ `who`/`w` = *current* sessions; `last` = the *history*. On a box you just landed on, `w` instantly tells you if someone else is on it.
+
+**`lsof` — list open files.** Because Linux treats sockets, pipes and devices as files, one tool shows what a process has open *and* what it's connected to:
+```bash
+sudo lsof -u sam        # ← open files for a specific USER  (the JQR question)
+sudo lsof -i            # open network connections (file-oriented view, like ss)
+sudo lsof -i :22        # who has port 22 open
+sudo lsof /var/log/syslog   # which processes hold THIS file open
+sudo lsof -p 1234       # every file open by PID 1234
+```
+> **How do you specify open files by user?** → **`lsof -u <username>`**. Practical use: find *why a disk won't unmount* (something still has a file open there → `lsof /mnt/x`), or what a suspicious PID is touching.
+
 ## Exam tips & gotchas
 - **`enable --now`** is the one-liner they want for "make it run now and survive reboot."
 - Forgot **`daemon-reload`** after editing a unit → your change silently does nothing.

