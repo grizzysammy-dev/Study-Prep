@@ -52,23 +52,20 @@ Concepts shown: `read -p` input, variables, quoting, and a here-block of `echo`s
 ## Project 2: directory & file checker
 > *"Check if a directory exists; if it does, see if a specific file exists within it. If not, create the file. Print whether the directory/file exists; if it didn't, print that it's now created."*
 
-```bash
-#!/bin/bash
-# dir-file-check.sh - check dir exists; if so check file; create file if missing
-DIR="${1:-/tmp/lab_demo}"          # 1st arg, or default
-FILE="${2:-notes.txt}"             # 2nd arg, or default
-if [ -d "$DIR" ]; then
-    echo "[+] Directory '$DIR' exists."
-    if [ -f "$DIR/$FILE" ]; then
-        echo "[+] File '$FILE' already exists in '$DIR'."
-    else
-        touch "$DIR/$FILE"
-        echo "[!] File '$FILE' did NOT exist -> it has now been created."
-    fi
+```#!/bin/bash
+# dir-file-check.sh — I give it a folder + filename (or it uses my defaults)
+
+DIR="${1:-/tmp/lab_demo}"   # 1st thing I type, or a default
+FILE="${2:-notes.txt}"      # 2nd thing I type, or a default
+
+mkdir -p "$DIR"             # make the folder if it isn't already there
+
+# now check for the file, and make it if it's missing
+if [ -f "$DIR/$FILE" ]; then
+  echo "[+] $FILE already exists in $DIR"
 else
-    echo "[-] Directory '$DIR' does not exist. Creating it and the file."
-    mkdir -p "$DIR" && touch "$DIR/$FILE"
-    echo "[!] Created directory '$DIR' and file '$FILE'."
+  touch "$DIR/$FILE"
+  echo "[!] $FILE wasn't there, so I made it"
 fi
 ```
 
