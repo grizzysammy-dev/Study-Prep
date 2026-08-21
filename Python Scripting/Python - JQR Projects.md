@@ -11,7 +11,7 @@ Two small, practical tools that exercise the Python basics from [Python Scriptin
 
 ---
 
-## Project 1: TCP port scanner
+## Project 1: Common TCP port scanner
 Concepts: `socket`, loops, `argparse`, string formatting.
 
 > The way I picture it: a socket is one end of a network conversation, my program's plug into the wire. "Scanning a port" is just trying to complete the TCP handshake with it: if something's listening the connection succeeds, and if nothing is it's refused or times out. A port scan is knocking on every door and noting which ones open.
@@ -20,9 +20,9 @@ Concepts: `socket`, loops, `argparse`, string formatting.
 #!/usr/bin/env python3
 """portscan.py - simple TCP port scanner."""
 import socket, argparse
-p = argparse.ArgumentParser(description="Tiny TCP port scanner")
-p.add_argument("host")
-p.add_argument("-p", "--ports", default="22,80,443,8080")
+p = argparse.ArgumentParser(description="TCP port scanner")
+p.add_argument("Host")
+p.add_argument("-p", "--ports", default="21,22,23,25,53,80,443,445,8080,3389,")
 a = p.parse_args()
 ports = [int(x) for x in a.ports.split(",")]
 print(f"Scanning {a.host} ...")
@@ -40,6 +40,7 @@ Scanning 127.0.0.1 ...
      22/tcp  closed
      80/tcp  closed
     443/tcp  closed
+    ...
    8080/tcp  OPEN
 ```
 `connect_ex()` returns `0` when the TCP handshake completes, meaning the port's open. This is the Python version of what [Nmap](../Recon%20Tools/Nmap.md) does under the hood, good for understanding but I use nmap for real work.
@@ -55,7 +56,7 @@ Concepts: file reading, `re` regex, `collections.Counter`.
 import re, sys, collections
 path = sys.argv[1] if len(sys.argv) > 1 else "/var/log/auth.log"
 counts = collections.Counter()
-pat = re.compile(r"Failed password for (?:invalid user )?(\S+) from (\d+\.\d+\.\d+\.\d+)")
+pat = re.compile(r"Failed password: (?:invalid user )?(\S+) from:(\d+\.\d+\.\d+\.\d+)")
 try:
     with open(path) as f:
         for line in f:
